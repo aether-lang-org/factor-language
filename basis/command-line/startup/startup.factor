@@ -70,4 +70,9 @@ from within Factor for more information.
     } cond
 
     output-stream get [ stream-flush ] when*
-    quit ;
+    ! When embedded in a C host, the "run" vocab is alien.remote-control,
+    ! whose MAIN installs the eval callback and returns. Do NOT quit() in
+    ! that case — control must return to the embedding program so it can
+    ! drive factor_eval_string repeatedly. (Restores the embedded-startup
+    ! behaviour that went away with the old start_embedded_factor C API.)
+    embedded? [ quit ] unless ;

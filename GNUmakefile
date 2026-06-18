@@ -136,6 +136,7 @@ ifdef CONFIG
 		$(BUILD_DIR)/data_heap_checker.o \
 		$(BUILD_DIR)/debug.o \
 		$(BUILD_DIR)/dispatch.o \
+		$(BUILD_DIR)/embed_api.o \
 		$(BUILD_DIR)/entry_points.o \
 		$(BUILD_DIR)/errors.o \
 		$(BUILD_DIR)/factor.o \

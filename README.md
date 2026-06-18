@@ -1,3 +1,34 @@
+> ## ⚠️ This is a fork
+>
+> [`aether-lang-org/factor-language`](https://github.com/aether-lang-org/factor-language)
+> is a fork of upstream [`factor/factor`](https://github.com/factor/factor)
+> with **one small change**: a new generic C embedding API
+> (`vm/embed_api.cpp`), compiled into the engine (`GNUmakefile`), plus a
+> one-line startup tweak (`basis/command-line/startup/` skips the final `quit`
+> when embedded). It restores the re-entrant embedded-eval behaviour the
+> modern upstream VM dropped when `start_embedded_factor` was deleted — the
+> surviving public path (`start_standalone_factor`) takes the process over and
+> `exit()`s, so a host can't get a result back. This fork lets a C host
+> evaluate Factor in-process against a **stock** `factor.image` and keep
+> running:
+>
+> - `factor_embed_eval` / `factor_embed_eval_free` — eval a string, get the
+>   printed output back;
+> - `factor_embed_map_set_hooks` + `factor_embed_map_get` / `…_put` — generic
+>   host key-value hooks the embedded code reaches via FFI (the embedding
+>   analogue of liblua's host-installed C functions), so a host can give a
+>   running Factor script live read/write access to a host-owned store.
+>
+> All host-agnostic and strings-only — no embedder's types leak into libfactor.
+>
+> It exists to back the [Aether](https://github.com/aether-lang-org/aether)
+> language's `contrib.host.factor` bridge — see that bridge's
+> [README](https://github.com/aether-lang-org/aether/blob/main/contrib/host/factor/README.md)
+> for how it's used. The embed API is deliberately **generic** (eval plus
+> host-agnostic k-v hooks, no Aether-specific types), so it's
+> upstream-proposable. For everything else, upstream Factor is authoritative —
+> track it there, not here.
+
 # Factor
 
 ![Build](https://github.com/factor/factor/actions/workflows/build.yml/badge.svg)
